@@ -1,23 +1,9 @@
-import {WebSocketServer, WebSocket} from 'ws';
+import { WebSocketServer } from "ws";
 
-const wss = new WebSocketServer({port: 8080})
 
-const subsciptions: {[key: string]:{
-    ws: WebSocket,
-    rooms: string[]
-}} = {}
+const wss = new WebSocketServer({port: 3001})
 
-wss.on('connection', (socket)=>{
-    const id = randomId();
-    subsciptions[id] = {
-        ws: socket,
-        rooms: []
-    }
-    socket.on('message', (message)=>{
-        socket.send("hey you sent me"+ message)
-    })
+wss.on('connection', (ws)=>{
+    
 })
 
-const randomId = ()=>{
-    return Math.random();
-}
