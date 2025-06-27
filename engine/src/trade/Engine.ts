@@ -1,7 +1,7 @@
 import fs from "fs";
 import { RedisManager } from "../RedisManager";
 import { ORDER_UPDATE, TRADE_ADDED } from "../types/index";
-import { CANCEL_ORDER, CREATE_ORDER, GET_DEPTH, GET_OPEN_ORDERS, MessageFromApi, ON_RAMP } from "../types/fromApi";
+import { CANCEL_ORDER, CREATE_ORDER, GET_DEPTH, GET_OPEN_ORDERS, MessageFromApi, ON_RAMP } from "../types/fromAPI";
 import { Fill, Order, Orderbook } from "./Orderbook";
 
 //TODO: Avoid floats everywhere, use a decimal similar to the PayTM project for every currency
@@ -48,6 +48,8 @@ export class Engine {
         }
         fs.writeFileSync("./snapshot.json", JSON.stringify(snapshotSnapshot));
     }
+
+
 
     updateBalance(userId: string, baseAsset: string, quoteAsset: string, side: "buy" | "sell", fills: Fill[], executedQty: number) {
         if (side === "buy") {

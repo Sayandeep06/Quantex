@@ -45,4 +45,54 @@ export class Orderbook{
             currentPrice: this.currentPrice
         }
     }
+
+    getDepth(){
+        const bidLevels: [string, string][] = [];
+        const askLevels: [string, string][] = [];
+
+        const bidDepthMap: { [price: string]: number } = {};
+        const askDepthMap: { [price: string]: number } = {};
+
+        for (const order of this.bids) {
+            if (!bidDepthMap[order.price]) bidDepthMap[order.price] = 0;
+            bidDepthMap[order.price] += order.quantity;
+        }
+
+        for (const order of this.asks) {
+            if (!askDepthMap[order.price]) askDepthMap[order.price] = 0;
+            askDepthMap[order.price] += order.quantity;
+        }
+
+        for( const price in bidDepthMap){
+            bidLevels.push([price, bidDepthMap[price].toString()]);
+        }
+
+        for(const price in askLevels){
+            askLevels.push([price, askDepthMap[price].toString()])
+        }
+
+        return {
+            bidLevels,
+            askLevels
+        };
+    }
+
+    getOpenOrders(userId: string): Order[]{
+        const asks = this.asks.filter(x => x.userId === userId);
+        const bids = this.asks.filter(x => x.userId === userId)
+        return [...asks, ...bids];
+    }
+
+    cancelBid(order: Order){
+        const cancelledOrder = this.bids.find(x => x.orderId === order.orderId);
+
+    }
+
+    cancelAsk(order: Order){
+        const cancelledOrder = this.asks.find(x => x.orderId === order.orderId);
+        if(!cancelledOrder)     return;
+
+        this.asks = this.asks.filter(x => x.orderId !== order.orderId);
+        return cancelledOrder.price
+    }
 }
