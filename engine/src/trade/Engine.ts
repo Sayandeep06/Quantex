@@ -91,24 +91,23 @@ export class Engine {
     }
 
     checkAndLockFunds(baseAsset: string, quoteAsset: string, side: "buy" | "sell", userId: string, asset: string, price: string, quantity: string) {
-        if (side === "buy") {
-            if ((this.balances.get(userId)?.[quoteAsset]?.available || 0) < Number(quantity) * Number(price)) {
-                throw new Error("Insufficient funds");
+        if(side == 'buy'){
+            if((this.balances.get(userId)?.[quoteAsset].available || 0) < Number(quantity) * Number(price)){
+                throw new Error("Insufficient funds")
             }
             //@ts-ignore
-            this.balances.get(userId)[quoteAsset].available = this.balances.get(userId)?.[quoteAsset].available - (Number(quantity) * Number(price));
-            
+            this.balances.get(userId)[quoteAsset].available = this.balances.get(userId)[quoteAsset].available - (Number(price)*Number(quantity))
             //@ts-ignore
-            this.balances.get(userId)[quoteAsset].locked = this.balances.get(userId)?.[quoteAsset].locked + (Number(quantity) * Number(price));
-        } else {
-            if ((this.balances.get(userId)?.[baseAsset]?.available || 0) < Number(quantity)) {
-                throw new Error("Insufficient funds");
+            this.balances.get(userId)[quoteAsset].locked = this.balances.get(userId)[quoteAsset].locked + (Number(price)*Number(quantity))
+        }else{
+            if((this.balances.get(userId)?.[baseAsset]?.available || 0) < Number(quantity)){
+                throw new Error("Insufficnet balance");
             }
+
             //@ts-ignore
-            this.balances.get(userId)[baseAsset].available = this.balances.get(userId)?.[baseAsset].available - (Number(quantity));
-            
+            this.balances.get(userId)[baseAsset].available = this.balances.get(userId)[baseAsset].available - Number(quantity);
             //@ts-ignore
-            this.balances.get(userId)[baseAsset].locked = this.balances.get(userId)?.[baseAsset].locked + Number(quantity);
+            this.balances.get(userId)[baseAsset].locked = this.balances.get(userId)[baseAsset].locked + Number(quantity);
         }
     }
 
