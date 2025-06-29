@@ -46,6 +46,18 @@ export class Orderbook{
         }
     }
 
+    addOrder(order: Order): {
+        executedQty: number,
+        fills: Fill[]
+    }{  
+        const a = 10;
+
+        return {
+            executedQty: a, 
+            fills: []
+        }
+    }
+
     getDepth(){
         const bidLevels: [string, string][] = [];
         const askLevels: [string, string][] = [];
