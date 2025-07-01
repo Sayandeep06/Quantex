@@ -84,8 +84,8 @@ export class Orderbook{
         }
 
         return {
-            bidLevels,
-            askLevels
+            bids: bidLevels,
+            asks: askLevels
         };
     }
 

@@ -49,7 +49,20 @@ export class Engine {
         fs.writeFileSync("./snapshot.json", JSON.stringify(snapshotSnapshot));
     }
 
+    addOrderbook(orderbook: Orderbook){
+        this.orderbooks.push(orderbook);
+    }
 
+    publishWsDepthUpdates(fills: Fill[], price: string, side: "buy" | "sell", market: string){
+        const orderbook = this.orderbooks.find( o => o.ticker() === market);
+        if(!orderbook){
+            return;
+        }
+        const depth = orderbook.getDepth();
+        if(side == "buy"){
+            const updatedAsks = depth?.asks.filter(x => fills.map(f => f.price).includes(x[0].toString()));
+        }
+    }
 
     updateBalance(userId: string, baseAsset: string, quoteAsset: string, side: "buy" | "sell", fills: Fill[], executedQty: number) {
         if (side === "buy") {
